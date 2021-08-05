@@ -1,9 +1,22 @@
 sudo: required
 services:
     - docker
-    
+
 before_install:
     - docker build -t sychen6192/hello-docker -f Dockerfile.dev . 
 
 script:
     - docker run -e CI=true sychen6192/hello-docker npm run test -- --coverage
+
+deploy:
+    provider: elasticbeanstalk
+    region: "us-east-1"
+    name: "docker"
+    env: "Docker-env"
+    bucket_name: "elasticbeanstalk-us-east-1-299300679802"
+    bucket_path: "hello-docker"
+    on:
+        branch: master
+    access_key_id: "$AWS_ACCESS_KEY"
+    secret_access_key:
+        secure: "$AWS_SECRET_KEY"
