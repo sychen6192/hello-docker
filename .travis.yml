@@ -1,12 +1,9 @@
 sudo: required
 services:
     - docker
-
-language:
-    - node_js
     
 before_install:
     - docker build -t sychen6192/hello-docker -f Dockerfile.dev . 
 
 script:
-    - docker run sychen6192/hello-docker npm run test -- --coverage
+    - docker run -e CI=true sychen6192/hello-docker npm run test -- --coverage
